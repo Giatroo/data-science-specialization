@@ -25,7 +25,7 @@ In \textbf{classification}, the most common metric is the \textbf{accuracy}:
 
 \[ E = \dfrac{\textrm{#Right predictions}}{\textrm{#Total predictions}}  \]
 
-In \textbf{regression}, the most common metric is the \textbf{R^2 score}:
+In \textbf{regression}, the most common metric is the \textbf{$R^2$ score}:
 
 \[ r^2 = 1 - \dfrac{\Sigma(y_i-\hat{y}_i)^2}{\Sigma(y_i-\ol{y})^2} \]
 
@@ -127,6 +127,69 @@ where we can set $\beta$ to emphasis recall or precision:
   \item $0<\beta<1$ emphasizes precision;
   \item $1<\beta$ emphasizes recall;
 \end{itemize}
+
+\section{Multi-class evalutations}
+
+Many multi-class evaluation metrics are just a generalization of the binary
+ones. For instance, we can generalize the concept of the confusion matrix easy:
+the columns will still be the actual classes and the rows, the predicted
+classes, but now it will be a $n\times n$ matrix, where $n$ is the number of
+classes. The correct predictions will still be the main diagonal and the
+wrong ones will be off that diagonal.
+
+Confusion matrices are still very good, because they enable us to visualize
+where the model is making more mistakes. Suppose we are creating a NN to predict
+written digits. Then we can visualize what digits the NN is missing the more
+(for instance, it might confuse the number eight with the number zero).
+
+We can also compute precision and recall, but we have two ways to do this.
+
+The first one is called \textbf{macro-average}, and it's when we give each class
+the same weight. And the second one is called \textbf{micro-average}, and it's
+when we give each instance the same weight.
+
+To compute \textit{macro-average} for recall (and same thing for precision), we
+compute the recall value of each class individualy and then average these
+values. For instance, supose we had 5 oranges in our test set and only 1 of them
+was predicted correctly. Therefore, we have a recall of $0.2$, because we have
+just one true possitive and four false negative. Supose we also have a lemon and
+apple class with respectively recall of $0.5$ and $1.0$. Therefore, to compute
+the \textit{macro-average recall}, we average those three values obtaining
+$0.57$.
+
+Suppose now we want the \textit{micro-average}. Then, we just look at each
+single instance. Suppose we had 2 lemons and 2 apples in our test set (and
+there, 1 of the lemons and 2 of the apples were predicted right). Therefore, we
+have 1 orange + 1 lemon + 2 apples right predicted out of 5 + 2 + 2 = 9 fruits.
+Therefore, our \textit{micro-average recall} is equal to $4/9 = 0.44$.
+
+If the classes have about the same number of instances, macro and micro average
+will be about the same, but if some classes are much larger than others, we can
+use micro or macro depending on what we need. If we want to weight our metric
+toward the largest ones, we use micro-averaging, but if we want to weight our
+matric toward the smallest ones, we use macro-averaging.
+
+If the micro-average is much lower than the macro-average, then we should
+examine the larger classes to look for poor performance. And if the
+macro-average is much lower, then we do the opposite: look at the smaller
+classes.
+
+\section{Regression Evaluation}
+
+In regression, we can't simply \textit{count} the number of errors, because
+there are no classes, so basicly our model is \textit{always} getting wrong.
+What we can, however, is compute some metrics like the distance from the target
+point and the predicted point (like the $R^2$ score).
+
+We could also differentiate the errors in types like what we do in
+classification, but it turns out this isn't important on those problems.
+
+For many cases, the typical $R^2$ score is quite good to analyse the model, but
+some times you might want another evaluation metric like
+\texttt{mean\_absolute\_error} (absolute difference of target and predicted
+values), \texttt{mean\_squared\_error} (squared difference of target and
+predicted values) or \texttt{median\_absolute\_error} (which is robust to
+outliners).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
