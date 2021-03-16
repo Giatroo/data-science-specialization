@@ -70,7 +70,3 @@ s = sum(nx.shortest_path_length(G, 32).values())
 nx.closeness_centrality(G, wf_improved=True)
 
 # Here the values are actually the same because there's just one component.
-
-# %% New ipython cell ================
-
-
